@@ -20,6 +20,7 @@ import typing
 import os
 import imghdr
 import base64
+from simplejson.errors import JSONDecodeError
 from validators.url import url as is_url
 
 
@@ -136,7 +137,7 @@ class controller(object):
                 "success": False}
 
     def upload(self, file_dir: str, delete_day: int, delete_after_view: int,
-               keep_exif: int, crypt: int) -> typing.Union[typing.Type, dict]:
+               keep_exif: int, crypt: int) -> dict:
         if not os.path.isfile(file_dir):
             raise OSError("Image file doesn't exist!")
         elif not imghdr.what(file_dir) in ["png", "jpg", "jpeg", "gif"]:
@@ -163,22 +164,26 @@ class controller(object):
                             'crypt': crypt}).json()
                     if response["success"]:
                         if self.server_info["image_magick"]:
-                            return image(
-                                self.url,
-                                response["msg"]["real_short"],
-                                response["msg"]["short"],
-                                response["msg"]["ext"],
-                                response["msg"]["token"],
-                                response["msg"]["thumb"],
-                                self.session)
+                            return {
+                                "class": image(
+                                    self.url,
+                                    response["msg"]["real_short"],
+                                    response["msg"]["short"],
+                                    response["msg"]["ext"],
+                                    response["msg"]["token"],
+                                    response["msg"]["thumb"],
+                                    self.session),
+                                "success": True}
                         else:
-                            return image(
-                                self.url,
-                                response["msg"]["real_short"],
-                                response["msg"]["short"],
-                                response["msg"]["ext"],
-                                response["msg"]["token"],
-                                self.session)
+                            return {
+                                "class": image(
+                                    self.url,
+                                    response["msg"]["real_short"],
+                                    response["msg"]["short"],
+                                    response["msg"]["ext"],
+                                    response["msg"]["token"],
+                                    self.session),
+                                "success": True}
                     else:
                         return response
 
@@ -216,33 +221,72 @@ class image(object):
             self.server_url, self.real_short, self.token)
 
     def delete(self) -> dict:
-        response = requests.get(self.delete_url, data={
-                                "format": "json"}).json()
+        try:
+            response = requests.get(self.delete_url, data={
+                                    "format": "json"}).json()
+        except JSONDecodeError:
+            response = {
+                "msg": "Cannot detele image: image doesn't exist!",
+                "success": False}
         return response
 
-    def download(self, path) -> None:
-        with open(path, "wb") as f:
-            f.write(self.session.get(self.base_url).content)
+    def download(self, path) -> dict:
+        response = self.session.get(self.base_url)
+        if response.status_code != 404:
+            with open(path, "wb") as f:
+                f.write(response.content)
+            response = {"msg": "Image downloaded!", "success": True}
+        else:
+            response = {
+                "msg": "Cannot download image: image doesn't exist!",
+                "success": False}
+        return response
 
-    def get_base64(self) -> str:
-        return base64.b64encode(self.session.get(self.base_url).content)
+    def get_base64(self) -> dict:
+        response = self.session.get(self.base_url)
+        if response.status_code != 404:
+            response = {
+                "base64": base64.b64encode(
+                    response.content),
+                "success": True}
+        else:
+            response = {
+                "msg": "Cannot read image: image doesn't exist!",
+                "success": False}
+        return response
 
     def get_info(self) -> dict:
-        return self.session.get(self.about_url).json()
+        try:
+            response = self.session.get(self.about_url).json()
+        except JSONDecodeError:
+            response = {
+                "msg": "Cannot get image info: image doesn't exist!",
+                "success": False}
+        return response
 
     def get_counter(self) -> dict:
-        return self.session.post(
-            self.server_url + "/c",
-            data={
-                "short": self.real_short,
-                "token": self.token}).json()
+        try:
+            response = self.session.post(
+                self.server_url + "/c",
+                data={
+                    "short": self.real_short,
+                    "token": self.token}).json()
+        except JSONDecodeError:
+            response = {
+                "msg": "Cannot get image counter: image doesn't exist!",
+                "success": False}
+        return response
 
     def modify(self, delete_day: int, first_view: int) -> dict:
-        response = requests.post(
-            self.modify_url,
-            data={
-                "delete-day": delete_day,
-                "first-view": first_view,
-                "format": "json"}).json()
-
+        try:
+            response = requests.post(
+                self.modify_url,
+                data={
+                    "delete-day": delete_day,
+                    "first-view": first_view,
+                    "format": "json"}).json()
+        except JSONDecodeError:
+            response = {
+                "msg": "Cannot modify image: image doesn't exist!",
+                "success": False}
         return response
