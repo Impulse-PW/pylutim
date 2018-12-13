@@ -44,7 +44,7 @@ $ pip install pylutim
 
 Install from source:
 ```
-$git clone https://github.com/Impulse-PW/pylutim
+$ git clone https://github.com/Impulse-PW/pylutim
 
 $ cd pylutim
 
