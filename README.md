@@ -2,9 +2,8 @@
 
 <b>What is pylutim?</b>
 ===================
-Pylutim is an API wrapper for Lutim (Let's Upload That IMage). Pylutim also
-fills in the gaps by giving you responses when the Lutim server may not
-have given back data otherwise, making everything more Human-Friendly.
+I liked Lutim so much I wrote pylutim. Pylutim is an API wrapper for
+Lutim (Let's Upload That IMage) made to be Human-Friendly.
 
 ## Example Usage
 
