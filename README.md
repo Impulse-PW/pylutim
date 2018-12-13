@@ -39,14 +39,16 @@ Pylutim is an API wrapper for [Lutim (Let's Upload That IMage)](https://framagit
 
 Install with pip:
 ```
-pip install pylutim
+$ pip install pylutim
 ```
 
 Install from source:
 ```
-git clone https://github.com/Impulse-PW/pylutim
-cd pylutim
-sudo python3 setup.py install
+$git clone https://github.com/Impulse-PW/pylutim
+
+$ cd pylutim
+
+$ sudo python3 setup.py install
 ```
 
 <b>Like pylutim?</b>
