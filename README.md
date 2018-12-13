@@ -3,7 +3,7 @@
 <b>What is pylutim?</b>
 ===================
 I liked Lutim so much I wrote pylutim. Pylutim is an API wrapper for
-Lutim (Let's Upload That IMage) made to be Human-Friendly.
+[Lutim (Let's Upload That IMage)](https://framagit.org/fiat-tux/hat-softwares/lutim) made to be Human-Friendly.
 
 ## Example Usage
 
