@@ -1,9 +1,6 @@
-# pylutim
+# What is pylutim?
 
-<b>What is pylutim?</b>
-===================
-I liked Lutim so much I wrote pylutim. Pylutim is an API wrapper for
-[Lutim (Let's Upload That IMage)](https://framagit.org/fiat-tux/hat-softwares/lutim) made to be Human-Friendly.
+Pylutim is an API wrapper for [Lutim (Let's Upload That IMage)](https://framagit.org/fiat-tux/hat-softwares/lutim) made to be Human-Friendly.
 
 ## Example Usage
 
@@ -36,6 +33,17 @@ I liked Lutim so much I wrote pylutim. Pylutim is an API wrapper for
 >>> image.modify(1, 0)
 {'msg': "Cannot modify image: image doesn't exist!", 'success': False}
 ```
+
+<b>Installation</b>
+===================
+
+Install with pip:
+'''pip install pylutim'''
+
+Install from source:
+'''git clone https://github.com/Impulse-PW/pylutim
+cd pylutim
+sudo python3 setup.py install'''
 
 <b>Like pylutim?</b>
 ======================
