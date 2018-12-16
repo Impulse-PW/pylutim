@@ -5,7 +5,7 @@ setuptools.setup(
     name="pylutim",
     version="0.5",
     description="API wrapper for Lutim (Let's Upload That IMage)",
-    install_requires=["validators"],
+    install_requires=["validators", "requests", "simplejson"],
     author="Impulse-PW",
     url="none",
     author_email="impulse-pw@openmailbox.org",
